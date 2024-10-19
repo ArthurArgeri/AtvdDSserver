@@ -2,13 +2,39 @@ const Sequelize = require("sequelize");
 const Express = require("express");
 
 const a = Express();
-
+const { create } = require("express-handlebars");
+/*
 const conexaoComBanco = new Sequelize("banco", "root", "", {
     host: "localhost",
     dialect: "mysql",
 });
+**/
+//Rotas
+a.get("/", function(req, res) {
+    res.send("Hello World");
+});
 
-conexaoComBanco
+a.get("/teste", function (req, res) {
+    res.send("Hello Teste");
+});
+
+a.get("/login/:email/:senha/:idade", function (req, res) {
+    res.send(req.params);
+});
+
+a.get("/htmlteste", function (req, res) {
+    res.sendFile(__dirname + "/html/index.html");
+});
+
+a.get("/cad", function (req, res) {
+    res.render("form");
+});
+
+const abs = create({ defalultLayout: "main"});
+a.engine("handlebars", abs.engine);
+a.set("view engine", "handlebars");
+
+/*conexaoComBanco
 .authenticate()
 .then(function (){
     console.log("Conexão realizada com sucesso!");
@@ -30,17 +56,8 @@ Postagem.create({
     titulo: "titulo exemplo",
     conteudo: "conteudo exemplo",
 });
-
-/*
-Postagem.sync({force: true});
 **/
 
-/*
-a.get("/", function() {
-    conexaoComBanco.get("select * from aluno");
-})
-
-a.listen(3031, function () {
-    console.log("Server is running on port 3031");
-  });
-**/
+a.listen("3031", function () {
+    console.log("Server is running in port 3031");
+});
